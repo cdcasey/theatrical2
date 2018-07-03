@@ -1,7 +1,9 @@
 const express = require('express');
 const PORT = process.env.PORT || 8000;
+const morgan = require('morgan');
 
 const server = express();
+server.use(morgan('common'));
 
 server.get('/', (req, res) => {
     res.send('hello');

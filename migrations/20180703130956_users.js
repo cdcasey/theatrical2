@@ -7,6 +7,8 @@ exports.up = function (knex, Promise) {
         table.string('email').unique();
         table.string('phone');
         table.string('password');
+        table.integer('role_id');
+        table.foreign('role_id').references('roles.id').onDelete('SET NULL');
         table.timestamps(true, true);
     });
 };

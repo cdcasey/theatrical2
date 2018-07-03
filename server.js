@@ -5,6 +5,10 @@ const morgan = require('morgan');
 const server = express();
 server.use(morgan('common'));
 
+const users = require('./routes/users');
+
+server.use('/users', users);
+
 server.get('/', (req, res) => {
     res.send('hello');
 });

@@ -4,7 +4,7 @@ const server = require('../server');
 const request = require('supertest')(server);
 const expect = require('chai').expect;
 
-describe('GET /users routes', () => {
+describe('GET /users', () => {
     it('should return a full list of users', (done) => {
         request.get('/users')
             .expect('Content-Type', /json/)
@@ -13,5 +13,11 @@ describe('GET /users routes', () => {
                 expect(res.text).to.include('Hegedus');
                 done(err);
             });
+    });
+
+    it('should return a 404 if the URL is spelled wrong', (done) => {
+        request.get('/user')
+            .expect(404)
+            .end(done);
     });
 });

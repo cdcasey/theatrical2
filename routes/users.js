@@ -1,8 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.json('Hegedus');
+const usersModel = require('../models/users');
+
+router.get('/', (req, res, next) => {
+    usersModel.all()
+        .then((users) => {
+            res.json({ users })
+        })
+        .catch(err => next);
 });
 
 module.exports = router;

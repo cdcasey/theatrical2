@@ -17,6 +17,10 @@ class Users {
     static all() {
         return knex(this.table).orderBy('id');
     }
+
+    static getById(id) {
+        return knex(this.table).where('id', id).first();
+    }
 }
 
 Users.table = 'users';

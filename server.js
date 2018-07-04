@@ -3,7 +3,9 @@ const PORT = process.env.PORT || 8000;
 const morgan = require('morgan');
 
 const server = express();
-server.use(morgan('common'));
+server.use(morgan('common', {
+    skip: function (req, res) { return process.env.NODE_ENV === 'test' }
+}));
 
 const users = require('./routes/users');
 

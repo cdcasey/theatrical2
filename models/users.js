@@ -22,6 +22,11 @@ class Users {
         return knex(this.table).insert(data).returning('*');
     }
 
+    update(id, data) {
+        data = this.validateData(data);
+        return knex(this.table).where('id', id).update(data);
+    }
+
     validateData(data) {
         const validData = {};
         for (const key in data) {

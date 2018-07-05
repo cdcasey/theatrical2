@@ -9,7 +9,6 @@ const knex = require('../db/knex');
 const bcryptSync = require('bcrypt');
 
 before((done) => {
-    console.log('DATABASE', knex.client.database());
     knex.migrate.rollback().then(() => {
         knex.migrate.latest().then(() => {
             return knex.seed.run()
@@ -87,5 +86,37 @@ describe('POST /users', () => {
                     });
             });
 
+    });
+});
+
+describe('PATCH /users/:id', () => {
+    it('should update info about a user', (done) => {
+        request.patch('/users/3')
+            .send({ phone: '512-850-6230' })
+            // .expect('Content-Type', /json/)
+            // .expect(200)
+            .end((err, res) => {
+                if (err) throw err;
+                knex('users')
+                    .where({
+                        id: '3'
+                    })
+                    .first()
+                    .then((user) => {
+                        expect(user.phone).to.equal('512-850-6230');
+                        expect(user.email).to.equal('cdcasey@gmail.com');
+                        done(err);
+                    });
+            });
+    });
+
+    it('should return undefined for an unknown user', (done) => {
+        request.get('/users/99999')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end((err, res) => {
+                expect(JSON.parse(res.text)).to.deep.equal({});
+                done(err);
+            });
     });
 });

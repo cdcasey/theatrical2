@@ -1,15 +1,30 @@
 'use strict';
 
 process.env.PORT = 8888;
-process.env.NODE_ENV = 'test';
 const server = require('../server');
 const request = require('supertest')(server);
 const expect = require('chai').expect;
 
-// const knexConfig = require('../knexfile')['test'];
-// const knex = require('knex')(knexConfig);
 const knex = require('../db/knex');
 const bcryptSync = require('bcrypt');
+
+before((done) => {
+    console.log('DATABASE', knex.client.database());
+    knex.migrate.rollback().then(() => {
+        knex.migrate.latest().then(() => {
+            return knex.seed.run()
+                .then(() => done())
+                .catch((err) => done(err));
+        });
+    });
+});
+
+after((done) => {
+    knex.migrate.rollback()
+        .then(() => done())
+        .catch((err) => done(err));
+});
+
 
 describe('GET /users', () => {
     it('should return a full list of users', (done) => {
@@ -59,7 +74,6 @@ describe('POST /users', () => {
             .send({ first_name: 'Charlie', last_name: 'Stites', phone: '555-555-555', email: 'charlie@someemail.nope', password: 'charlie', role_id: 2 })
             .expect(200)
             .end(function (err, res) {
-                console.log(knex.client.database());
                 if (err) throw err;
                 knex('users')
                     .where({
@@ -69,14 +83,7 @@ describe('POST /users', () => {
                     .then((user) => {
                         expect(user.last_name).to.equal('Stites');
                         expect(bcryptSync.compareSync('charlie', user.password)).to.equal(true);
-                        knex('users')
-                            .where('id', user.id)
-                            .first()
-                            .del()
-                            .then(() => {
-                                done(err)
-                            }
-                            );
+                        done(err);
                     });
             });
 

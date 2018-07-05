@@ -7,6 +7,7 @@ const server = express();
 server.use(morgan('common', {
     skip: function (req, res) { return process.env.NODE_ENV === 'test' }
 }));
+// server.use(morgan('common'));
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 

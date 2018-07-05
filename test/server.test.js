@@ -1,5 +1,4 @@
 process.env.PORT = 8888;
-process.env.NODE = 'test';
 const expect = require('chai').expect;
 const server = require('../server');
 const request = require('supertest')(server);

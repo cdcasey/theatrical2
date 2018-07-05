@@ -1,27 +1,40 @@
 'use strict';
 
 const knex = require('../db/knex');
+const bcryptSync = require('bcrypt');
 
 class Users {
 
-    constructor(first_name, last_name, email, phone = null, password, role_id = 2) {
-        // this.table = 'users';
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.email = email;
-        this.phone = phone;
-        this.password = password;
-        this.role_id = role_id;
+    constructor() {
+        this.table = 'users';
     }
 
-    static all() {
+    all() {
         return knex(this.table).orderBy('id');
     }
 
-    static getById(id) {
+    getById(id) {
         return knex(this.table).where('id', id).first();
+    }
+
+    create(data) {
+        data = this.validateData(data);
+        return knex(this.table).insert(data).returning('*');
+    }
+
+    validateData(data) {
+        const validData = {};
+        for (const key in data) {
+            if (data[key]) {
+                validData[key] = data[key];
+            }
+            if (key === 'password') {
+                validData[key] = bcryptSync.hashSync(validData[key], 10);
+            }
+        }
+        return validData;
     }
 }
 
-Users.table = 'users';
-module.exports = Users;
+// Users.table = 'users';
+module.exports = new Users();

@@ -56,15 +56,7 @@ describe('GET /users/:id', () => {
             });
     });
 
-    it('should return undefined for an unknown user', (done) => {
-        request.get('/users/99999')
-            .expect('Content-Type', /json/)
-            .expect(200)
-            .end((err, res) => {
-                expect(JSON.parse(res.text)).to.deep.equal({});
-                done(err);
-            });
-    });
+    it('should return undefined for an unknown user', (done, id) => checkUserDoesNotExist(done, 9999));
 });
 
 describe('POST /users', () => {
@@ -110,13 +102,26 @@ describe('PATCH /users/:id', () => {
             });
     });
 
-    it('should return undefined for an unknown user', (done) => {
-        request.get('/users/99999')
-            .expect('Content-Type', /json/)
-            .expect(200)
-            .end((err, res) => {
-                expect(JSON.parse(res.text)).to.deep.equal({});
-                done(err);
-            });
-    });
+    it('should return undefined for an unknown user', (done, id) => checkUserDoesNotExist(done, 9999));
 });
+
+describe('DELETE /users/:id', () => {
+    it('should delete a user by id', (done) => {
+        request.delete('/users/3')
+            // .expect('Content-Type', /json/)
+            .expect(200)
+            .end(() => checkUserDoesNotExist(done, 3));
+    });
+
+    it('should return undefined for an unknown user', (done, id) => checkUserDoesNotExist(done, 9999));
+});
+
+function checkUserDoesNotExist(done, id) {
+    request.get('/users/' + id)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end((err, res) => {
+            expect(JSON.parse(res.text)).to.deep.equal({});
+            done(err);
+        });
+}

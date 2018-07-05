@@ -24,7 +24,11 @@ class Users {
 
     update(id, data) {
         data = this.validateData(data);
-        return knex(this.table).where('id', id).update(data);
+        return this.getById(id).update(data);
+    }
+
+    delete(id) {
+        return this.getById(id).delete();
     }
 
     validateData(data) {

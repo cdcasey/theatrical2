@@ -34,12 +34,23 @@ router.post('/', (req, res, next) => {
 
 router.patch('/:id', (req, res, next) => {
     usersModel.update(req.params.id, req.body)
-    .then((user) => {
-        res.redirect(`/users/${req.params.id}/profile`);
-    })
-    .catch((err) => {
-        next(err);
-    })
+        .then((user) => {
+            res.redirect(`/users/${req.params.id}/profile`);
+        })
+        .catch((err) => {
+            next(err);
+        })
+});
+
+router.delete('/:id', (req, res, next) => {
+    usersModel.delete(req.params.id)
+        .then((user) => {
+            res.json({ message: '1 user deleted' });
+        })
+        .catch((err) => {
+            next(err);
+        })
+
 });
 
 module.exports = router;

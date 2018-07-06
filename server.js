@@ -13,9 +13,11 @@ server.use(bodyParser.json());
 
 const users = require('./routes/users');
 const plays = require('./routes/plays');
+const productions = require('./routes/productions');
 
 server.use('/users', users);
 server.use('/plays', plays);
+server.use('/productions', productions);
 
 server.get('/', (req, res) => {
     res.send('hello');

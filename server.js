@@ -14,10 +14,12 @@ server.use(bodyParser.json());
 const users = require('./routes/users');
 const plays = require('./routes/plays');
 const productions = require('./routes/productions');
+const scenes = require('./routes/scenes');
 
 server.use('/users', users);
 server.use('/plays', plays);
 server.use('/productions', productions);
+server.use('/scenes', scenes);
 
 server.get('/', (req, res) => {
     res.send('hello');

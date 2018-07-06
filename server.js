@@ -12,8 +12,10 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 
 const users = require('./routes/users');
+const plays = require('./routes/plays');
 
 server.use('/users', users);
+server.use('/plays', plays);
 
 server.get('/', (req, res) => {
     res.send('hello');

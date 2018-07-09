@@ -16,6 +16,12 @@ const plays = require('./routes/plays');
 const productions = require('./routes/productions');
 const scenes = require('./routes/scenes');
 
+server.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 server.use('/users', users);
 server.use('/plays', plays);
 server.use('/productions', productions);

@@ -4,7 +4,7 @@
   "description": "Theatre produciton management made easy.",
   "main": "server.js",
   "scripts": {
-    "test": "export NODE_ENV='test' && ./node_modules/.bin/mocha -t 5000 --exit",
+    "test": "export NODE_ENV='test' && nyc ./node_modules/.bin/mocha -t 5000 --exit",
     "refresh": "./db/refresh.sh"
   },
   "repository": {
@@ -27,6 +27,7 @@
     "chai": "^4.1.2",
     "mocha": "^5.2.0",
     "morgan": "^1.9.0",
+    "nyc": "^12.0.2",
     "supertest": "^3.1.0"
   }
 }

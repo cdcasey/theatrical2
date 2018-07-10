@@ -15,6 +15,7 @@ const users = require('./routes/users');
 const plays = require('./routes/plays');
 const productions = require('./routes/productions');
 const scenes = require('./routes/scenes');
+const auth = require('./routes/auth');
 
 server.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -26,6 +27,7 @@ server.use('/users', users);
 server.use('/plays', plays);
 server.use('/productions', productions);
 server.use('/scenes', scenes);
+server.use('/auth', auth);
 
 server.get('/', (req, res) => {
     res.send('hello');

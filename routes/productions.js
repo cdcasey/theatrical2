@@ -4,11 +4,11 @@ const router = express.Router();
 const productionsModel = require('../models/productions');
 
 router.get('/', (req, res, next) => {
-    productionsModel.all()
+    productionsModel.byUser(req.headers.userid)
         .then((productions) => {
             res.json({ productions });
         })
-        .catch(err => next);
+        .catch(err => next(err));
 });
 
 router.get('/:id', (req, res, next) => {

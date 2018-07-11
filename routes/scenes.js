@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
         .then((scenes) => {
             res.json({ scenes });
         })
-        .catch(err => next);
+        .catch(err => next(err));
 });
 
 router.get('/:id', (req, res, next) => {
@@ -16,7 +16,7 @@ router.get('/:id', (req, res, next) => {
         .then((scenes) => {
             res.json({ scenes });
         })
-        .catch(err => next);
+        .catch(err => next(err));
 });
 
 router.post('/', (req, res, next) => {

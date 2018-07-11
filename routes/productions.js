@@ -16,7 +16,7 @@ router.get('/:id', (req, res, next) => {
         .then((productions) => {
             res.json({ productions });
         })
-        .catch(err => next);
+        .catch(err => next(err));
 });
 
 router.post('/', (req, res, next) => {

@@ -27,6 +27,7 @@ after((done) => {
 describe('GET /productions', () => {
     it('should return a full list of productions', (done) => {
         request.get('/productions')
+            .set('userid', 3)
             .expect('Content-Type', /json/)
             .expect(200)
             .end((err, res) => {
@@ -40,6 +41,15 @@ describe('GET /productions', () => {
             .expect(404)
             .end(done);
     });
+
+    it('should return 500 if no user is specified', (done) => {
+        request.get('/productions')
+            .expect(500)
+            .end((err, res) => {
+                done(err);
+            });
+    });
+
 });
 
 describe('GET /productions/:id', () => {

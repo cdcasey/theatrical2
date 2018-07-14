@@ -49,7 +49,16 @@ router.delete('/:id', (req, res, next) => {
         .catch((err) => {
             next(err);
         })
+});
 
+router.get('/:id/cast', (req, res, next) => {
+    productionsModel.castList(req.params.id)
+        .then((cast) => {
+            res.json({ cast })
+        })
+        .catch((err) => {
+            next(err);
+        });
 });
 
 module.exports = router;

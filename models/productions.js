@@ -17,6 +17,15 @@ class Productions extends DBModel {
             .where('users_productions.user_id', userId);
     };
 
+    castList(id) {
+        return knex('users')
+            .orderBy('users.id')
+            .select('users.first_name', 'users.last_name', 'characters.name as character')
+            .join('users_characters', 'users.id', 'users_characters.user_id')
+            .join('characters', 'users_characters.character_id', 'characters.id')
+            .join('users_productions', 'users_productions.user_id', 'users.id')
+            .where('users_productions.production_id', id);
+    }
 }
 
 module.exports = new Productions();

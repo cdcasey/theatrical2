@@ -40,6 +40,16 @@ class Productions extends DBModel {
             .join('scenes', 'rehearsal_dates.scene_id', 'scenes.id')
             .where('production_id', id)
     }
+
+    blackoutDates(id) {
+        const productionPlay = this.getById(id).select('play_id');
+        return knex('blackout_dates')
+            .orderBy('blackout_dates.id')
+            .select('users.id as id', 'users.first_name', 'users.last_name', 'users.phone', 'users.email', 'start_time', 'end_time')
+            .join('users_productions', 'blackout_dates.users_productions_id', 'users_productions.id')
+            .join('users', 'users_productions.user_id', 'users.id')
+            .where('users_productions.production_id', id)
+    }
 }
 
 module.exports = new Productions();

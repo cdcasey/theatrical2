@@ -61,4 +61,14 @@ router.get('/:id/cast', (req, res, next) => {
         });
 });
 
+router.get('/:id/dates', (req, res, next) => {
+    productionsModel.productionDates(req.params.id)
+        .then((production_dates) => {
+            res.json({ production_dates })
+        })
+        .catch((err) => {
+            next(err);
+        });
+});
+
 module.exports = router;

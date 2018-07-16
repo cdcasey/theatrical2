@@ -26,6 +26,12 @@ class Productions extends DBModel {
             .join('users_productions', 'users_productions.user_id', 'users.id')
             .where('users_productions.production_id', id);
     }
+
+    productionDates(id) {
+        return knex('production_dates')
+            .orderBy('id')
+            .where('production_id', id)
+    }
 }
 
 module.exports = new Productions();

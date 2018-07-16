@@ -20,7 +20,7 @@ class Productions extends DBModel {
     castList(id) {
         return knex('users')
             .orderBy('users.id')
-            .select('users.first_name', 'users.last_name', 'characters.name as character')
+            .select('users.first_name', 'users.last_name', 'users.email', 'users.phone', 'characters.name as character')
             .join('users_characters', 'users.id', 'users_characters.user_id')
             .join('characters', 'users_characters.character_id', 'characters.id')
             .join('users_productions', 'users_productions.user_id', 'users.id')

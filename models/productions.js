@@ -32,6 +32,14 @@ class Productions extends DBModel {
             .orderBy('id')
             .where('production_id', id)
     }
+
+    rehearsalDates(id) {
+        return knex('rehearsal_dates')
+            .orderBy('rehearsal_dates.id')
+            .select('start_time', 'end_time', 'scenes.name')
+            .join('scenes', 'rehearsal_dates.scene_id', 'scenes.id')
+            .where('production_id', id)
+    }
 }
 
 module.exports = new Productions();

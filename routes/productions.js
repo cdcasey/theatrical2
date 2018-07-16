@@ -62,9 +62,11 @@ router.get('/:id/cast', (req, res, next) => {
 });
 
 router.get('/:id/dates', (req, res, next) => {
-    productionsModel.productionDates(req.params.id)
-        .then((production_dates) => {
-            res.json({ production_dates })
+    const rehearsal_dates = productionsModel.rehearsalDates(req.params.id);
+    const production_dates = productionsModel.productionDates(req.params.id);
+    Promise.all([rehearsal_dates, production_dates])
+        .then((data) => {
+            res.json({ rehearsal_dates: data[0], production_dates: data[1] })
         })
         .catch((err) => {
             next(err);

@@ -20,12 +20,13 @@ class Productions extends DBModel {
     castList(id) {
         return knex('users')
             .orderBy('users.id')
-            .select('users.id as id', 'users.first_name', 'users.last_name', 'users.email', 'users.phone', 'characters.name as character', 'blackout_dates.start_time', 'blackout_dates.end_time')
+            .select('users.id as id', 'users.first_name', 'users.last_name', 'users.email', 'users.phone', 'characters.name as character', knex.raw('ARRAY_AGG(json_build_object(\'start\', blackout_dates.start_time, \'end\', blackout_dates.end_time)) as blackouts'))
             .join('users_characters', 'users.id', 'users_characters.user_id')
             .join('characters', 'users_characters.character_id', 'characters.id')
             .join('users_productions', 'users_productions.user_id', 'users.id')
             .fullOuterJoin('blackout_dates', 'users.id', 'blackout_dates.users_id')
-            .where('users_productions.production_id', id);
+            .where('users_productions.production_id', id)
+            .groupBy('users.id', 'users.first_name', 'users.last_name', 'users.email', 'users.phone', 'characters.name');
     }
 
     productionDates(id) {

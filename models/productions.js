@@ -20,10 +20,11 @@ class Productions extends DBModel {
     castList(id) {
         return knex('users')
             .orderBy('users.id')
-            .select('users.first_name', 'users.last_name', 'users.email', 'users.phone', 'characters.name as character')
+            .select('users.id as id', 'users.first_name', 'users.last_name', 'users.email', 'users.phone', 'characters.name as character', 'blackout_dates.start_time', 'blackout_dates.end_time')
             .join('users_characters', 'users.id', 'users_characters.user_id')
             .join('characters', 'users_characters.character_id', 'characters.id')
             .join('users_productions', 'users_productions.user_id', 'users.id')
+            .fullOuterJoin('blackout_dates', 'users.id', 'blackout_dates.users_id')
             .where('users_productions.production_id', id);
     }
 
@@ -41,14 +42,13 @@ class Productions extends DBModel {
             .where('production_id', id)
     }
 
-    blackoutDates(id) {
-        const productionPlay = this.getById(id).select('play_id');
+    blackoutDates(productionId) {
         return knex('blackout_dates')
             .orderBy('blackout_dates.id')
             .select('users.id as id', 'users.first_name', 'users.last_name', 'users.phone', 'users.email', 'start_time', 'end_time')
-            .join('users_productions', 'blackout_dates.users_productions_id', 'users_productions.id')
-            .join('users', 'users_productions.user_id', 'users.id')
-            .where('users_productions.production_id', id)
+            .join('users', 'blackout_dates.users_id', 'users.id')
+            .join('users_productions', 'users_productions.user_id', 'users.id')
+            .where('users_productions.production_id', productionId)
     }
 }
 

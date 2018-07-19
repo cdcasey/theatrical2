@@ -14,6 +14,10 @@ class Users extends DBModel {
         return knex(this.table).where('email', email).first();
     }
 
+    blackoutDates(userId) {
+        return knex('blackout_dates')
+            .where('blackout_dates.users_id', userId)
+    }
 }
 
 module.exports = new Users();

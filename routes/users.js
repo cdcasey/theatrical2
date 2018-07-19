@@ -50,7 +50,16 @@ router.delete('/:id', (req, res, next) => {
         .catch((err) => {
             next(err);
         })
+});
 
+router.get('/:id/blackout_dates', (req, res, next) => {
+    usersModel.blackoutDates(req.params.id)
+        .then((blackout_dates) => {
+            res.json({ blackout_dates })
+        })
+        .catch((err) => {
+            next(err);
+        });
 });
 
 module.exports = router;
